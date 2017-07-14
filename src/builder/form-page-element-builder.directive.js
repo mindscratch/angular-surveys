@@ -12,9 +12,15 @@ angular.module('mwFormBuilder').directive('mwFormPageElementBuilder', function (
             isFirst: '=',
             isLast: '=',
             onReady: '&',
-            readOnly: '=?'
+            readOnly: '=?',
+            templateUrl: '@?'
         },
-        templateUrl: 'mw-form-page-element-builder.html',
+        templateUrl: function(element, attributes) {
+            if (attributes.templateUrl) {
+                return attributes.templateUrl;
+            }
+            return 'mw-form-page-element-builder.html';
+        },
         controllerAs: 'ctrl',
         bindToController: true,
         controller: function(mwFormUuid){
