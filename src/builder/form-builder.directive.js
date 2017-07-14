@@ -1,6 +1,5 @@
 
 angular.module('mwFormBuilder').directive('mwFormBuilder', function ($rootScope) {
-
     return {
         replace: true,
         restrict: 'AE',
@@ -10,9 +9,15 @@ angular.module('mwFormBuilder').directive('mwFormBuilder', function ($rootScope)
             options: '=?',
             formStatus: '=?',
             onImageSelection: '&',
-            api: '=?'
+            api: '=?',
+            templateUrl: '@?'
         },
-        templateUrl: 'mw-form-builder.html',
+        templateUrl: function(element, attributes) {
+            if (attributes.templateUrl) {
+                return attributes.templateUrl;
+            }
+            return 'mw-form-builder.html';
+        },
         controllerAs: 'ctrl',
         bindToController: true,
         controller: function(mwFormUuid, MW_QUESTION_TYPES, mwFormBuilderOptions){
