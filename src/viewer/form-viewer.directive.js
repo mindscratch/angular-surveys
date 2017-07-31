@@ -12,10 +12,17 @@ angular.module('mwFormViewer').directive('mwFormViewer', function ($rootScope) {
             options: '=?',
             formStatus: '=?', //wrapper for internal angular form object
             onSubmit: '&',
+            onConfirmationGoBack: '&?', // mindscratch: optional function that gets invoked when the user clicks on 'go back' button on confirmation page
+            confirmationErrorMessage: '=?', // mindscratch: optional message to display if an error occurs when submitting the form
             api: '=?'
 
         },
-        templateUrl: 'mw-form-viewer.html',
+        templateUrl: function(element, attributes) {
+            if (attributes.templateUrl) {
+                return attributes.templateUrl;
+            }
+            return 'mw-form-viewer.html';
+        },
         controllerAs: 'ctrl',
         bindToController: true,
         controller: function($timeout, $interpolate){
@@ -70,8 +77,15 @@ angular.module('mwFormViewer').directive('mwFormViewer', function ($rootScope) {
                         ctrl.buttons.nextPage.visible=false;
                         ctrl.currentPage=null;
                         $timeout(ctrl.resetPages, 0);
-
                     }
+                    // mindscratch: reset the pages
+                    ctrl.api.resetPages = function() {
+                        ctrl.resetPages();
+                    }
+                }
+
+                if (!angular.isFunction(ctrl.onConfirmationGoBack)) {
+                    ctrl.onConfirmationGoBack = angular.noop;
                 }
             };
 

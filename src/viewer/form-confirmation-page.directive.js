@@ -9,15 +9,20 @@ angular.module('mwFormViewer')
         scope: {
             submitStatus: '=',
             confirmationMessage: '=',
-            readOnly: '=?'
+            readOnly: '=?',
+            onGoBack: '&?', // mindscratch: callback to allow user to go back
+            errorMessage: '=' // mindscratch: message displayed if an error occurs while submitting the form
         },
-        templateUrl: 'mw-form-confirmation-page.html',
+        templateUrl: function(element, attributes) {
+            if (attributes.templateUrl) {
+                return attributes.templateUrl;
+            }
+            return 'mw-form-confirmation-page.html';
+        },
         controllerAs: 'ctrl',
         bindToController: true,
         controller: function(){
             var ctrl = this;
-
-
         },
         link: function (scope, ele, attrs, mwFormViewer){
             var ctrl = scope.ctrl;
